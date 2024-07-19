@@ -1,0 +1,222 @@
+Docker Images
+=================================================
+
+By Default we will not have images on the docker host machine.
+
+All the images will be available at docker host
+
+Demo1: List images on the dockerHost
+
+# docker images
+
+
+Demo 2: Pull images on the Docker Host
+
+# docker pull ubuntu
+
+Demo 3: pull an Image of a specific tag
+
+# docker pull ubuntu:20.04
+
+Demo 4: See details about image
+
+# docker history ubuntu
+
+# docker history ubuntu:20.04
+
+
+Demo 5: Delete an Image
+
+# docker rmi ubuntu
+# docker rmi ubuntu:20.04
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Docker Image carries it address form where we have to pull it
+
+The image Name will be in the below format:
+
+ registrypath/reponame/Imagename:tagname
+
+docker.io/library/ubuntu:latest
+
+Example:
+===================
+# docker pull ubuntu
+
+# docker pull sonal04/myimage:01
+
+# docker pull awsRegistry/reponame/imagename
+
+# docker pull 172.34.56:5000/repo1/imagename
+
+=====================================
+
+Day 2:
+======================================
+
+# sudo su -
+
+Demo : Pull an Image and run the image to launch a container.
+
+# docker pull ubuntu 
+
+Run the image to launch a container
+
+# docker run ubuntu
+
+Command to list all the containers
+
+# docker ps -a
+
+Container will be created , will have a name and will have an ID and status will be exited.
+
+Create a container from same image but give a unique name to the container:
+
+# docker run --name cont1 ubuntu
+
+Container will be created , will have a name as cont1 and will have an ID and status will be exited.
+
+Note: When containers are in exited state, docker host will not allocate any CPU or memory to the containers
+
+
+You can check number of resources allocated to container on the host machine using the below command
+
+# docker stats
+
+Press CTRL+c to come out to the terminal.
+
+
+Foreground Mode(-it)
+=========================
+Here:
+
+i= interactive
+t=terminal
+
+With this option:
+  >  A container will be created from the Image
+ > Container will be with status Running
+ > User of the host machine will be attached to the terminal of the container
+
+
+# docker run --name u1 -it ubuntu
+
+Come out of the container and keep it running
+
+# press key CTRL pq
+
+Check status of container:
+
+# docker ps -a
+
+Again attach to the terminal of the Up and running container
+
+# docker attach containername/id
+
+Example: docker attach 525ee7990ca0
+
+Note: You can attach only to the up and running OS image containers
+
+
+Comeout of the container by giving exit signal
+
+# exit
+
+
+You will be on the VM and container status will be Exited.
+
+
+Start an exited container:
+=======================
+
+# docker start containername/id
+
+# docker ps -a
+
+====================================
+Stop a running container 
+
+# docker stop containername
+
+Kill a running container
+
+# docker kill containername
+
+==================================
+Delete containers on the docker host
+
+# docker rm -f $(docker ps -aq)
+
+===================================
+
+Detached Mode: (-d)
+===================================
+With this option:
+  >  A container will be created from the Image
+ > Container will be with status Running
+ > User of the host machine will be detached from the container
+
+# docker run --name web -d nginx
+
+How can we access or attach to the terminal of above container:
+
+# docker exec web uname
+
+Example: docker exec contaienrname command
+
+Docker execute a command on the container.
+
+How can we access or attach to the terminal of nginxcontainer:
+
+# docker exec -it web bash
+
+Give exit to comout of the command
+
+
+Container will still be running
+
+# docker ps
+
+
+Check logs of the container:
+==============================
+
+# docker logs containername
+
+
+Describe the details of the container:
+=========================
+
+# docker inspect containername/id
+
+
+Delete all images and stopped containers
+
+# docker system prune --all
+
+Give y 
+For command to complete.
+
+All stopped container will be deleted
+All images that are dangling(not associated to a container) will be deleted
+
+====================================
