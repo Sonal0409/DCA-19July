@@ -54,25 +54,6 @@ Demo 5: Delete an Image
 # docker rmi ubuntu:20.04
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Docker Image carries it address form where we have to pull it
 
 The image Name will be in the below format:
