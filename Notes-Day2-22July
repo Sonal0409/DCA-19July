@@ -1,3 +1,14 @@
+
+Detached Mode: (-d)
+===================================
+With this option:
+  >  A container will be created from the Image
+ > Container will be with status Running
+ > User of the host machine will be detached from the container
+
+# docker run --name web -d nginx
+
+
 How can we access or attach to the terminal of above container:
 
 # docker exec web uname
