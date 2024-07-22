@@ -3,6 +3,10 @@
 
 # sudo su -
 
+Run this command to delete all the containers
+
+# docker rm -f $(docker ps -aq)
+
 Detached Mode: (-d)
 ===================================
 With this option:
