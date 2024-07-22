@@ -1,0 +1,192 @@
+How can we access or attach to the terminal of above container:
+
+# docker exec web uname
+
+Example: docker exec contaienrname command
+
+Docker execute a command on the container.
+
+How can we access or attach to the terminal of nginxcontainer:
+
+# docker exec -it web bash
+
+Give exit to comout of the command
+
+
+Container will still be running
+
+# docker ps
+
+
+Check logs of the container:
+==============================
+
+# docker logs containername
+
+
+Describe the details of the container:
+=========================
+
+# docker inspect containername/id
+
+
+Delete all images and stopped containers
+
+# docker system prune --all
+
+Give y 
+For command to complete.
+
+All stopped container will be deleted
+All images that are dangling(not associated to a container) will be deleted
+
+====================================
+
+Port Forwarding or Port mapping
+
+It is implemented using the flag 
+
+-p or -P
+
+In case of -p, docker admin has to provide the port details
+
+System port : a port available on VM
+Target port: application port exposed on the container
+
+
+-p systemport:targetport
+
+***
+Port mapping in docker will be done at runtime
+Once a container is created we will not do port mapping
+
+Demo:
+
+Create a container with image nginx and do the port mapping
+
+# docker run -d --name web1 -p 8484:80 nginx
+
+# docker ps -a
+
+Access the container application from the browser:
+
+Go to Practice labs → click on Master→ select desktop
+
+Open the FF browser and give localhost:8484
+
+We will see nginx
+==================
+OR
+
+Port mapping using flag -P
+
+In this cases docker will take a random port and map it to target port
+
+# docker run -d –name web3 -P httpd
+
+
+Docker Volumes:
+===============================
+
+To check if volume is present or not:
+
+# docker volume ls
+
+To create a volume
+
+# docker volume create myvol
+
+See details about the volume:
+
+# docker inspect myvol
+
+Demo:
+Map the volume to the container directory and check if container data is preserved in the volume or not.
+
+# docker run -it --name c2 -v myvol:/tmp  ubuntu
+
+You will be on the container
+
+# cd /tmp
+
+Create 2 files
+
+# touch contfile1 contfile2
+Come out of container
+
+# CTL pq
+
+Go to volume directory:
+
+# cd /var/lib/docker/volumes/myvol/_data
+
+# ls
+
+Container files will be present
+
+delete the container
+
+# docker rm -f $(docker ps -aq)
+
+Still the files will be on the volume.
+
+====================
+Assignment:
+Demo 2: Sharing of data between containers
+
+
+Volume -> Bind Mount
+==================================
+This is second type of volume
+In this volume we don't preserve the data of the container in the docker area(/var/lib/docker/volumes)
+Rather we preserve containers data in any directory of the host machine
+There is no name given to the volume
+When we do the volume mapping, the host directory path is mapped to container directory path
+
+Example :  
+
+  -v  /home/labuser/mydata:/tmp
+
+
+Demo:
+—----------------------------
+
+We have a GITHUB repo with HTML code, we have to copy the code on the container directory
+
+Repo path : https://github.com/Sonal0409/ecomm.git
+
+Step 1:
+
+# git clone https://github.com/Sonal0409/ecomm.git
+
+# cd ecomm
+
+# docker run -d --name myweb -P -v /root/ecomm:/usr/local/apache2/htdocs/  httpd
+
+
+Commiting a container into an Image
+====================================
+
+Build an Image from a Container
+
+Create a container:
+# docker run -it –name cont1 ubuntu
+
+On the container, run some commands:
+
+# apt-get update && apt-get install git -y
+
+# touch index.html
+
+Come out of the container
+
+# CTL pq
+
+Commit a container into an Image
+
+command: docker commit containerName Imagename
+
+# docker commit cont1 myimage01
+
+# docker images
+
