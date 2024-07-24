@@ -1,0 +1,162 @@
+
+Dockerfile
+=======================================
+> It is a simple test file
+> the name of the file is always Dockerfile or dockerfile
+> In this file we write instructions of what we need on the container
+Dockerfile → build into an Image→ run into Container
+
+In dockerfile, we write only 2 things
+
+Keyword and 2. Argument
+
+These keywords are given to you by docker
+Argument is user provided command or script
+
+Syntax:
+================
+
+Keyword argument
+
+We can maintain dockerfile in the version control system
+
+Dockerfile keywords and details
+=========================
+
+1. FROM
+
+With this keyword we will give the Base image name of docker
+Whenever we are creating our custom image, it will always be based upon a docker base image
+We take a base image and do customizations on it.
+This keyword will not be repeated.
+This keyword will always be the first line of dockerfile
+
+2. RUN
+
+With this keyword we will give the linux commands that will install/upgrade/remove packages
+we will give the linux commands to create directories, files, users
+we will give the linux commands to run a script
+This keyword can be repeated multiple times
+These command given with run keyword are executed on the container and completed then the container is launched.
+When the image is run, the container comes with pre installed packages, users, directories given with run commands
+
+
+3. COPY : This keyword is used to copy any file on the containers directory
+This keyword cannot copy tar files
+
+4. ADD : This keyword is used to copy any file on the containers directory
+But ADD keyword is specially used when we have to copy TAR files on Containers directory
+
+5. EXPOSE : This keyword is used in order to expose the container to a port number. 
+So that we can access the application running on the container.
+This port number will then be used during port mapping at runtime.
+
+6. CMD : with this keyword we will give a command/arguments that will get executed 
+when the container is launched. 
+Once is container is launched what is final command that  will be executed on the container.
+
+In this keyword, if you have requirement to change the final CMD command, 
+you are allowed to change it.
+The docker admin can replace the CMD command coming from the image by passing a new command at runtime
+
+
+7. ENTRYPOINT :
+with this keyword we will give a command/arguments that will get executed 
+when the container is launched. 
+Once is container is launched what is final command that  will be executed on the container
+With this keyword, we cannot replace the final command unlike CMD keyword ,
+here the docker admin can pass a new command at runtime, but the new command/argument 
+will get appended with the command that is coming from dockerfile.
+
+8. ENV : This keyword is used to store repeated data of the dockerfile.
+It is used to create a variable and store value into it.
+This variable can then be used in the dockerfile.
+
+9 WORKDIR
+
+10 VOLUME
+
+11 LABEL
+
+
+
+Demo:
+=======================
+
+# sudo su -
+
+# mkdir mydockerfiles
+
+# cd mydockerfiles
+
+# vim index.html
+
+Press i and insert text in it
+This file is form docker.
+
+Save the file.
+
+# vim dockerfile
+
+Press i and insert below content
+
+FROM ubuntu
+RUN apt-get update
+ENV pkg_name nginx
+ENV dest_path /var/www/html/
+RUN apt-get install $pkg_name -y
+COPY index.html $dest_path
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
+Save the file 
+
+# docker build -t appdeploy .
+
+Run the image to launch the container
+
+# docker run -d --name cont1 -P  appdeploy
+
+
+==============================
+Demo 2: 
+
+# vim app.py
+
+from flask import Flask 
+import os 
+app = Flask(__name__) 
+@app.route('/') 
+
+def hello(): 
+    return ('\nHello from Container World! \n\n')
+
+if __name__ == "__main__": 
+    app.run(host="0.0.0.0", port=8080, debug=True)
+
+
+Save the file
+
+# vim dockerfile
+
+FROM ubuntu:20.04
+RUN apt update && apt install python3 -y && apt install python3-flask -y
+COPY app.py /tmp
+EXPOSE 8080
+CMD ["python3", "/tmp/app.py"]
+
+
+Dockerfile Demo
+====================================
+
+# git clone https://github.com/Sonal0409/nodejsappDockerfile.git
+
+# cd nodejsappDockerfile
+
+# docker build -t nodeapp .
+
+# docker run -d -P nodeapp:latest
+
+Access the app from the browser : http://localhost:49153
+
