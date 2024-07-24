@@ -117,6 +117,13 @@ EXPOSE 8080
 CMD ["python3", "/tmp/app.py"]
 
 
+save the file
+
+# docker build -t myimage01 .
+
+# docker run -d -P myimage01
+
+
 Dockerfile Demo
 ====================================
 
