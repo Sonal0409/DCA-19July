@@ -1,6 +1,10 @@
 Docker Networking:
 ======================
 
+# sudo su -
+
+# docker rm -f $(docker ps -aq)
+
 # docker network ls
 
 Create a custom bridge network
