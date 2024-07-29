@@ -1,0 +1,203 @@
+Docker swarm
+===================================================
+
+# hostname MANAGER
+# sudo su -
+
+# docker swarm init
+
+The current machine is now Leader machine
+
+# copy the token which will look like this:
+
+  docker swarm join --token SWMTKN-1-64dczervns37sw84jlb79fczskofbx9wh2x25vrv8x95s9o03m-75s49518smp5hxyyort6k8ing 172.31.41.114:2377
+
+
+Go to Worker1 and worker 2  VM on the lab
+
+# sudo su -
+
+Paste the token
+
+The machine will join the swarm cluster
+
+Go to manager node
+
+# docker node ls
+
+You will see all the 3 nodes part of cluster
+
+
+
+
+Demo 1: 
+
+Create a service that will create 6 replicas of the Image nginx
+The service will also distribute the replicas on the nodes of the Cluster 
+
+# docker service create --name mysvc --replicas 6 nginx
+
+# docker service ls
+
+# docker service ps mysvc
+
+Demo 2: Ensure that the desired count of replicas are always running in the cluster
+
+
+Go to any worker node, delete the replica
+
+# docker rm -f conatinerid
+
+
+On the manager node , check the service
+
+# docker service ls
+
+
+The desired count matches the current count
+
+Orchestration tool recreates a new replica to match current count and desired count.
+
+=============================
+
+Scaling in the swarm cluster
+
+If we have created a service and we want to increase the desired count of replicas or reduce the desired count of replicas  the we use the docker service scale command
+
+In docker swarm we cannot do autoscaling.
+
+Scale up command:
+
+# docker service scale mysvc=7
+
+Scale down:
+
+# docker service scale mysvc=2
+
+
+Delete the service , all the replicas also get deleted
+
+# docker service rm mysvc
+=====================================================
+
+Swarm Service - GLOBAL
+====================================================
+
+This type of service will:
+
+Create 1 container on each VM that part of the cluster
+We have 2 VMs in our cluster, so the service of type global will create 1 replicas for each VM
+You cannot increase or reduce the count of replicas
+It  will always ensure 1 replica of the image is running on the VM.
+Whenever a new VM is added to the cluster, the service of type global will create 1 replica on the new Vm also.
+
+# docker service create --name mysvc --mode global nginx
+
+=========================================
+
+Create Service in docker swarm cluster using custom image
+
+# docker service rm mysvc
+
+# docker service create --name mysvc -p 8181:3000 --replicas 4 sonal04/samplepyapp:v1
+
+To access the replicas fo to worker 1 terminal and run the below command
+
+# while true;do curl http://localhost:8181;sleep 1;echo " ";done
+
+You will observe the request being forwarded to different replicas which are endpoints of the service- mysvc .
+
+Scale up and scale down the service:
+
+# docker service scale mysvc=6
+
+# docker service scale mysvc=3
+
+Rolling update:
+==========================
+
+Update the image of the service:
+
+# docker service update --image sonal04/samplepyapp:v2 mysvc
+
+Rollback to previous version of image:
+
+# docker service rollback mysvc
+
+===============================================
+
+Fail Over Scenarios:
+================================
+
+Scenario 1: Drain the Worker 1
+
+ > no new containers will be scheduled on this worker node
+> Existing containers will be recreated on the other nodes of the clsuter
+
+# docker node ls
+
+
+# docker node update –availability drain <nodeHostname>
+
+# docker service ps mysvc | grep Running
+
+Create a new service, no new replicas will be scheduled on the worker node that is drained
+
+# docker service create --name mysvc2 --replicas 2 nginx
+
+# docker service ps mysvc2 | grep Running
+
+Bring back the service to Active status
+
+# docker node update --availability Active  <hostname>
+
+===========================
+Scenario 2:
+===========================
+
+# docker service rm mysvc mysvc2
+
+Create replicas:
+
+# docker service create --name mysvc -p 8181:3000 --replicas 4 sonal04/samplepyapp:v1
+
+# docker service ps mysvc
+
+# docker service create --name mysvc2 --replicas 4 nginx
+
+# docker service ps mysvc2
+
+
+GO to worker 1 → leave the swarm
+
+# docker swarm leave 
+
+
+GO to Manager node
+
+# docker node ls  → you will see worker node is with status Down
+
+You delete the node as it is not part of the cluster.
+
+# docker node ls
+
+# docker node rm <nodeid>
+
+
+Observe: All the replicas will be on manager and worker2 node
+
+# docker service ps mysvc | grep Running
+
+# docker service ps mysvc2 | grep Running
+
+
+Join the worker to the swarm:
+
+On the manager node run the below command:
+
+# docker swarm join-token worker
+
+Copy the generated token on worker 1
+
+Worker will join the swarm.
+
