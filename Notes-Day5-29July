@@ -48,6 +48,8 @@ Demo 1:
 Create a service that will create 6 replicas of the Image nginx
 The service will also distribute the replicas on the nodes of the Cluster 
 
+# docker rm -f $(docker ps -aq)
+
 # docker service create --name mysvc --replicas 6 nginx
 
 # docker service ls
