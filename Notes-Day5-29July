@@ -13,13 +13,26 @@ The current machine is now Leader machine
   docker swarm join --token SWMTKN-1-64dczervns37sw84jlb79fczskofbx9wh2x25vrv8x95s9o03m-75s49518smp5hxyyort6k8ing 172.31.41.114:2377
 
 
-Go to Worker1 and worker 2  VM on the lab
+Go to Worker1  VM on the lab
+
+# sudo hostname WORKER1
 
 # sudo su -
 
 Paste the token
 
 The machine will join the swarm cluster
+
+Go to worker 2  VM on the lab
+
+# sudo hostname WORKER2
+
+# sudo su -
+
+Paste the token
+
+The machine will join the swarm cluster
+
 
 Go to manager node
 
