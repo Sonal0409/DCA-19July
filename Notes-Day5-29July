@@ -61,6 +61,8 @@ Demo 2: Ensure that the desired count of replicas are always running in the clus
 
 Go to any worker node, delete the replica
 
+# docker ps -a
+
 # docker rm -f conatinerid
 
 
