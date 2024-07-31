@@ -141,3 +141,48 @@ Go to the desktop -> firefox browser
 
 localhost:5000 → to vote
 localhost:5001 → to see results
+
+
+==================================================
+
+Project deployment on Kubernetes cluster
+
+ON Master Node:
+===========================
+# kubeadm init --ignore-preflight-errors=all
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+# kubectl get nodes
+
+
+Install Container network interface
+
+# kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+# kubectl get nodes
+
+
+Generate token on master node:
+
+kubeadm token create --print-join-command
+
+
+Copy token on worker nodes.
+
+On the master node execute
+
+# kubectl get nodes
+
+All the workers will be part of cluster now
+
+Kubernetes cluster is now ready.
+
+
+
+Execute commands on master node. No kubernetes commands run on Worker node.
+
