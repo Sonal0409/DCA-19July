@@ -1,0 +1,164 @@
+
+Project implementation for DCA module:
+=================================================
+
+# mkdir myproject
+# cd myproject
+
+# vim dockerfile
+
+
+FROM alpine
+
+RUN apk add --update redis
+
+EXPOSE 6379
+CMD ["redis-server"]
+
+
+# docker build -t myredisproject .
+
+# docker images
+
+
+
+
+Step 2: Publish Image to docker Hub
+
+# docker login
+
+Give docker hub user id and password
+
+
+Now change the image name:
+
+# docker tag myredisproject  dockerhubAccount/myredisproject 
+
+
+
+# docker push sonal04/myredisproject
+
+
+
+
+
+Once the image is ready, we will deploy the image in the cluster:
+
+
+SWARM CLSUTER:
+
+# docker service create --name projectredis --replicas 3 sonal04/myredisproject
+
+# docker ps
+
+Copy the container id and let us execute command in the container
+
+# docker exec -it 1ba0a77c2204 sh
+
+Execute below commands on the container:
+
+# redis-cli
+
+127.0.0.1:6379> ping
+PONG
+
+127.0.0.1:6379> set name Docker
+OK
+127.0.0.1:6379> get name 
+"Docker"
+127.0.0.1:6379> set day Wednesday
+OK
+127.0.0.1:6379> get day
+"Wednesday"
+
+
+
+
+
+
+===========================================
+
+Project deployment on Kubernetes cluster
+
+ON Master Node:
+===========================
+# kubeadm init --ignore-preflight-errors=all
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+# kubectl get nodes
+
+
+Install Container network interface
+
+# kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+# kubectl get nodes
+
+
+Generate token on master node:
+
+kubeadm token create --print-join-command
+
+
+Copy token on worker nodes.
+
+On the master node execute
+
+# kubectl get nodes
+
+All the workers will be part of cluster now
+
+Kubernetes cluster is now ready.
+
+
+
+
+Execute commands on master node. No kubernetes commands run on Worker node.
+
+Creation of POD in kubernetes.
+============================
+
+Create a pod to deploy container of our project Image.
+Image is present in docker hub
+
+Image name: sonal04/myredisproject
+
+
+# kubectl run pod1 --image sonal04/myredisproject
+
+# kubectl get pods
+
+
+
+
+
+Deploy multiple pods of the image:
+===============================
+
+# kubectl create deployment myproject --image sonal04/myredisproject --replicas 4
+# kubectl get pods
+
+Delete a pod
+
+# kubectl delete pod <podname>
+
+# kubectl get pods
+
+New pod will be created
+
+kubectl exec -it <podname> -- sh
+/ # redis-cli
+127.0.0.1:6379> ping
+PONG
+
+
+
+Delete all the pods for the deployment:
+
+# kubectl delete  deployment --all
+
