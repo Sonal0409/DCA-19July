@@ -1,0 +1,43 @@
+Execute commands on master node. No kubernetes commands run on Worker node.
+
+Creation of POD in kubernetes.
+============================
+
+Create a pod to deploy container of our project Image.
+Image is present in docker hub
+
+Image name: sonal04/myredisproject
+
+
+# kubectl run pod1 --image sonal04/myredisproject
+
+# kubectl get pods
+
+
+
+
+
+Deploy multiple pods of the image:
+===============================
+
+# kubectl create deployment myproject --image sonal04/myredisproject --replicas 4
+# kubectl get pods
+
+Delete a pod
+
+# kubectl delete pod <podname>
+
+# kubectl get pods
+
+New pod will be created
+
+kubectl exec -it <podname> -- sh
+/ # redis-cli
+127.0.0.1:6379> ping
+PONG
+
+
+
+Delete all the pods for the deployment:
+
+# kubectl delete  deployment --all
