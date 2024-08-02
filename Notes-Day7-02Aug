@@ -87,6 +87,32 @@ Image name: sonal04/myredisproject
 
 # kubectl get pods
 
+# vim pod1.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+  labels:
+   app: webserver
+   author: sonal
+spec:
+ containers:
+  - name: c1
+    image: sonal04/myredisproject
+  - name: c2
+    image: tomcat
+
+
+
+# kubectl create pod1.yml
+
+
+
+
+
+
+
 
 
 
