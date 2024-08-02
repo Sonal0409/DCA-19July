@@ -1,3 +1,77 @@
+If you master or worker nodes are not ready
+You will have to reset kubernetes on the lab
+
+ON THE MASTER NODE:
+====================================
+
+# kubeadm reset --force
+
+
+ON THE both the WORKER NODES
+===========================================
+
+# kubadm reset
+
+give y when asked
+
+=======================================================
+ON THE MASTER NODE:
+============================================================
+
+# kubeadm init --ignore-preflight-errors=all
+
+Execute  THE BELOW COMMANDS
+===================================
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+# kubectl get nodes
+
+
+Install Container network interface
+
+# kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+# kubectl get nodes
+
+
+Generate token on master node:
+
+kubeadm token create --print-join-command
+
+
+Copy token on worker nodes.
+==================================
+
+On the master node execute
+
+# kubectl get nodes
+
+All the workers will be part of cluster now
+
+Kubernetes cluster is now ready.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Execute commands on master node. No kubernetes commands run on Worker node.
 
 Creation of POD in kubernetes.
