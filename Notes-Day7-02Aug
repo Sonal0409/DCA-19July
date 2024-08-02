@@ -41,3 +41,29 @@ PONG
 Delete all the pods for the deployment:
 
 # kubectl delete  deployment --all
+
+
+
+
+
+
+Kubernetes -> Container orchestration tool
+
+1. Kubernetes -> also called as K8s.
+2. Kubernetes also works in a cluster mode where it is installed on one VM and it manages various worker nodes.
+3. In case Kubernetes the main VM is called as Master, and the other VMs are called as worker nodes.
+4. By default no containers will be scheduled on the Master node, container will always be scheduled on worker nodes
+5. Kubernetes can also create containers of docker as well as other container tools like CRI-O, containerD, Rkt container etc
+6. The Kubernetes should have a unique Container runtime interface(container tool)
+7. Once containers have been created, Kubernetes can auto scale the containers
+8. Kubernetes allows us to store the data on storage drivers outside the cluster -> Persistent Volume
+9. Kubernetes supports ingress load balancers
+10. Kubernetes is also available as a service on various cloud platform like AWS, GCP or Azure
+11 The names of k8s service are : EKS, AKS, GKE
+12. In Kubernetes we have many objects to control various workflows on Kubernetes
+      to create a replicas - POD, scaleup -> replicaSet , update Image -> Deployment , statefulset, service object, daemon sets
+13. We can create jobs and cron jobs in Kubernetes
+14. Kubernetes also supports various deployment strategies like: Rolling update, recrete, blue and green, canary deployment
+15. Kubernetes also has a GUI -> Kubernetes Dashboard
+16. Kubernetes provides objects like secrets to store sensitive data and configmap to store configurations in Kubernetes cluster
+
